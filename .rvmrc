@@ -1,0 +1,3 @@
+rvm use 1.9.3-p0 --default
+rvm --create use default@rb_zmq_tester
+echo "Change to current directory settings: rb_zmq_tester"
