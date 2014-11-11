@@ -1,0 +1,24 @@
+message ActionMsg {
+	enum ActionType {
+		START_SCAN = 1;
+		STATUS_UPDATE = 2;
+		SCAN_RESULT = 3;
+	}
+	
+	enum ConfigFormat {
+		CSV = 1;
+		LSE_MAP = 2;
+	}
+	
+	required ActionType action_type = 1;
+	
+	optional string configuration_content = 2 [default = "N/A"];
+
+	optional ConfigFormat configuration_format = 3 [default = CSV];
+	
+	optional string diagnostic_data = 4 [default = "N/A"];
+	
+	optional string scan_status = 5 [default = "N/A"];
+	
+	optional string upstream_uid = 6 [default = "999999"]; 
+}

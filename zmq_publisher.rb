@@ -4,16 +4,21 @@ require 'rubygems'
 require 'ffi-rzmq'
 require './message_handler.rb'
 
-ip = "10.1.3.109"
-port = "31285"
+ip = "127.0.0.1"
+port = "20174"
 
-msg_pub = MessageHandler::MessagePublisher.new
-msg_pub.create_publisher(ip, port)
-cnt = 0
+@@zmq_pub = MessageHandler::MessagePublisher.new
+@@zmq_pub.create_publisher(ip, port)
 
-while (1) do
-  msg = "Hello " + cnt.to_s
-  msg_pub.send_message(msg)
-  cnt = cnt+1
-  sleep(1)
-end
+@@action_msg = MessageHandler::ActionMessage.new
+
+file = File.open("./config/ex_m3_device.csv")
+content = file.read
+upstream_id = "20141110"
+
+msg = @@action_msg.create_startscan_msg(content, upstream_id)
+@@zmq_pub.send_message(msg)
+sleep(1)
+@@zmq_pub.send_message(msg)
+
+puts "csv file content: #{content}. msg #{msg}"

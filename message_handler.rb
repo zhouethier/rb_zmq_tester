@@ -4,7 +4,20 @@ require 'rubygems'
 require 'ffi-rzmq'
 require 'beefcake'
 
+require './proto/lib/ActionMessage.pb.rb'
+
 module MessageHandler
+  class ActionMessage
+    # SCAN_NETWORK
+    def create_startscan_msg (content, upstream_id)
+      new_msg = ActionMsg.new :action_type => ActionMsg::ActionType::START_SCAN,
+                              :configuration_content => content,
+                              :configuration_format => ActionMsg::ConfigFormat::CSV,
+                              :upstream_uid => upstream_id
+      return new_msg.encode("")
+    end
+  end
+  
   class MessagePublisher
     def error_check(rc)
       if ZMQ::Util.resultcode_ok?(rc)
